@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "4ikatilo-master.sln"
+    "dotnet.defaultSolution": "Plarformer_MT_SB16.sln"
 }

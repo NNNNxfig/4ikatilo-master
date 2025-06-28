@@ -1,39 +1,31 @@
 using UnityEngine;
 
-
 public class Uzi : MonoBehaviour
 {
-    public Vector3 offset = new Vector3(1, 0, 0);
     private SpriteRenderer spriteRenderer;
-    private SpriteRenderer parentSpriteRenderer;
 
-    private void Start()
+    void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+            Debug.LogError("SpriteRenderer не найден на объекте Uzi!");
+    }
 
-        if (transform.parent != null)
+    void Update()
+    {
+        if (transform.parent != null && spriteRenderer != null)
         {
-            parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+            // Если родитель смотрит влево (scale.x < 0), флипнуть спрайт пушки
+            spriteRenderer.flipX = transform.parent.localScale.x < 0;
         }
     }
 
-    private void Update()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (parentSpriteRenderer != null)
+        if (other.CompareTag("Uzi"))
         {
-            spriteRenderer.flipX = !parentSpriteRenderer.flipX;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            transform.SetParent(other.transform);
-            transform.localPosition = offset;
-
-            
-            parentSpriteRenderer = other.GetComponent<SpriteRenderer>();
+            other.transform.SetParent(transform);
+            other.transform.localPosition = new Vector3(1, 0, 0);
         }
     }
 }
